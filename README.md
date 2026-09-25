@@ -1,12 +1,19 @@
-# PR07 - Sistema de reportes ciudadanos
+# PR07 / M03 / P03 - Sistema de reportes ciudadanos
 
 ## Objetivo
-Implementar un sistema web de reportes ciudadanos con JSP, Servlet, Tomcat y PostgreSQL, conforme a la ficha PR07 y al alcance de F02/P02.
+Evolucionar el proyecto PR07 a una aplicación Web 2.0 con JSF y PrimeFaces, conservando el problema de reportes ciudadanos, la trazabilidad del modelo y la validación de negocio con PostgreSQL.
+
+## Alcance del incremento
+- Formulario con validación de negocio.
+- Lista de reportes con componente PrimeFaces.
+- Persistencia en PostgreSQL.
+- Mensajes comprensibles y flujo reproducible.
+- Eliminación de elementos residuales del proyecto anterior para mantener limpieza técnica.
 
 ## Roles funcionales
-- Ciudadano: registra reportes.
-- Operador: revisa y da seguimiento.
-- Responsable: atiende la resolución del caso.
+- Ciudadano: registra incidencias.
+- Operador: revisa y prioriza.
+- Responsable: da seguimiento y resuelve el caso.
 
 ## Entidades principales
 1. usuarios
@@ -20,70 +27,61 @@ Implementar un sistema web de reportes ciudadanos con JSP, Servlet, Tomcat y Pos
 - Java 11+
 - Maven 3.8+
 - Docker Desktop o Docker Engine
-- Tomcat 9+ (opcional para desplegar WAR)
+- Tomcat 9+
 
-## Arranque rápido de la base PostgreSQL
+## Base de datos local
 Desde la raíz del proyecto:
 
 ```bash
 docker compose up -d
 ```
 
-Esto levanta PostgreSQL con:
-
-- Base de datos: `pr07_db`
+Configuración de la base:
+- Base: `pr07_db`
 - Usuario: `postgres`
 - Contraseña: `postgres`
 - Puerto: `5432`
 
-Se ejecuta el script [db/schema.sql](db/schema.sql) automáticamente al iniciar el contenedor.
-
-## Verificar PostgreSQL
-```bash
-psql -h localhost -U postgres -d pr07_db
-```
-
-## Compilación del proyecto
+## Compilación
 ```bash
 cd SIS_WEB/proyecto
 mvn clean package
 ```
 
-Se genera:
+Artefacto generado:
 
 ```bash
 target/pr07-project.war
 ```
 
 ## Despliegue en Tomcat
-1. Copiar el WAR a la carpeta webapps de Tomcat.
+1. Copiar el WAR a `webapps`.
 2. Iniciar Tomcat.
 3. Abrir:
 
 ```text
-http://localhost:8080/pr07-project/
+http://localhost:8080/pr07-project/index.xhtml
 ```
 
 ## Flujo principal
-1. El ciudadano entra a la app.
-2. Crea un reporte con título, descripción, ubicación y prioridad.
-3. El sistema valida los datos.
-4. Si es correcto, se guarda en PostgreSQL.
-5. El listado muestra los reportes registrados.
+1. Ingresar a la vista de inicio.
+2. Seleccionar "Nuevo reporte".
+3. Registrar título, descripción, ubicación y prioridad.
+4. Validar que los datos sean correctos.
+5. Confirmar el guardado y revisar la tabla de reportes.
 
-## Validación positiva y negativa
-- Positiva: título válido, descripción completa, ubicación válida, prioridad = ALTA.
-- Negativa: título vacío, descripción vacía, ubicación vacía, prioridad = URGENTE.
+## Validaciones positivas y negativas
+- Positiva: título, descripción y ubicación completos; prioridad `ALTA`.
+- Negativa: título vacío, descripción vacía, ubicación vacía o prioridad no válida.
 
 ## Evidencia reproducible
 - [pom.xml](pom.xml)
 - [docker-compose.yml](docker-compose.yml)
 - [db/schema.sql](db/schema.sql)
-- [src/main/java/org/uv/controller/ReporteServlet.java](src/main/java/org/uv/controller/ReporteServlet.java)
+- [src/main/java/org/uv/bean/ReporteBean.java](src/main/java/org/uv/bean/ReporteBean.java)
 - [src/main/java/org/uv/dao/ReporteDAO.java](src/main/java/org/uv/dao/ReporteDAO.java)
 - [src/main/java/org/uv/validation/ReporteValidator.java](src/main/java/org/uv/validation/ReporteValidator.java)
 - [src/test/java/org/uv/validation/ReporteValidatorTest.java](src/test/java/org/uv/validation/ReporteValidatorTest.java)
 
 ## Resultado esperado
-La aplicación permite registrar reportes ciudadanos con validación y persistencia en PostgreSQL, y la base puede levantarse de manera reproducible con Docker Compose.
-# SISWEB-PROYECTO
+La aplicación ejecuta una vista JSF con PrimeFaces, valida entradas, persiste en PostgreSQL y presenta una interfaz consistente para el flujo principal del PR07.

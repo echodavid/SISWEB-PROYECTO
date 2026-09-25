@@ -1,22 +1,18 @@
 package org.uv.util;
 
 public class DatabaseConfig {
-    private static final String URL = "jdbc:postgresql://localhost:5432/pr07_db";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
-
     private DatabaseConfig() {
     }
 
     public static String getUrl() {
-        return URL;
+        return System.getProperty("db.url", System.getenv().getOrDefault("DB_URL", "jdbc:postgresql://localhost:5432/pr07_db"));
     }
 
     public static String getUser() {
-        return USER;
+        return System.getProperty("db.user", System.getenv().getOrDefault("DB_USER", "postgres"));
     }
 
     public static String getPassword() {
-        return PASSWORD;
+        return System.getProperty("db.password", System.getenv().getOrDefault("DB_PASSWORD", "postgres"));
     }
 }
