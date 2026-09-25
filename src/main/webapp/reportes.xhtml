@@ -3,40 +3,174 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+
 <h:head>
     <title>Reportes</title>
+
+    <style>
+        .reportes-container {
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+
+        .reporte-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .reporte-info {
+            flex: 1;
+        }
+
+        .reporte-titulo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .reporte-descripcion {
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .reporte-detalles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.95rem;
+        }
+
+        .detalle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .detalle i {
+            color: #666;
+        }
+
+        .reporte-id {
+            color: #777;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .prioridad {
+            font-weight: bold;
+        }
+
+        .estado {
+            padding: 5px 10px;
+            border-radius: 15px;
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+    </style>
 </h:head>
+
 <h:body>
+
     <h:form>
-        <p:messages id="messages" globalOnly="true" showDetail="true" closable="true" />
+
+        <p:messages id="messages"
+                    globalOnly="true"
+                    showDetail="true"
+                    closable="true"/>
 
         <p:toolbar>
             <p:toolbarGroup>
-                <p:button value="Inicio" outcome="/index" />
-                <p:button value="Nuevo reporte" outcome="/nuevo-reporte" />
+                <p:button value="Inicio"
+                          icon="pi pi-home"
+                          outcome="/index"/>
+
+                <p:button value="Nuevo reporte"
+                          icon="pi pi-plus"
+                          outcome="/nuevo-reporte"/>
             </p:toolbarGroup>
         </p:toolbar>
 
-        <p:dataTable value="#{reporteBean.reportes}" var="reporte" paginator="true" rows="10" style="margin-top: 20px;">
-            <p:column headerText="ID">
-                <h:outputText value="#{reporte.id}" />
-            </p:column>
-            <p:column headerText="Título">
-                <h:outputText value="#{reporte.titulo}" />
-            </p:column>
-            <p:column headerText="Descripción">
-                <h:outputText value="#{reporte.descripcion}" />
-            </p:column>
-            <p:column headerText="Ubicación">
-                <h:outputText value="#{reporte.ubicacion}" />
-            </p:column>
-            <p:column headerText="Prioridad">
-                <h:outputText value="#{reporte.prioridad}" />
-            </p:column>
-            <p:column headerText="Estado">
-                <h:outputText value="#{reporte.estadoId}" />
-            </p:column>
-        </p:dataTable>
+
+        <div class="reportes-container">
+
+            <p:dataScroller value="#{reporteBean.reportes}"
+                            var="reporte"
+                            chunkSize="10">
+
+                <f:facet name="header">
+                    <h2>Lista de reportes</h2>
+                </f:facet>
+
+
+                <div class="reporte-card">
+
+                    <div class="reporte-info">
+
+                        <div class="reporte-id">
+                            Reporte #<h:outputText value="#{reporte.id}"/>
+                        </div>
+
+
+                        <div class="reporte-titulo">
+                            <h:outputText value="#{reporte.titulo}"/>
+                        </div>
+
+
+                        <div class="reporte-descripcion">
+                            <h:outputText value="#{reporte.descripcion}"/>
+                        </div>
+
+
+                        <div class="reporte-detalles">
+
+                            <div class="detalle">
+                                <i class="pi pi-map-marker"></i>
+
+                                <strong>Ubicación:</strong>
+
+                                <h:outputText value="#{reporte.ubicacion}"/>
+                            </div>
+
+
+                            <div class="detalle">
+                                <i class="pi pi-exclamation-triangle"></i>
+
+                                <strong>Prioridad:</strong>
+
+                                <h:outputText
+                                        value="#{reporte.prioridad}"
+                                        styleClass="prioridad"/>
+                            </div>
+
+
+                            <div class="detalle">
+                                <i class="pi pi-info-circle"></i>
+
+                                <strong>Estado:</strong>
+
+                                <h:outputText
+                                        value="#{reporte.estadoId}"
+                                        styleClass="estado"/>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </p:dataScroller>
+
+        </div>
+
     </h:form>
+
 </h:body>
 </html>
