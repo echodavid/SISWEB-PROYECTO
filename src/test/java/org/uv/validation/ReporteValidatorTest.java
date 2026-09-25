@@ -28,4 +28,16 @@ public class ReporteValidatorTest {
         reporteInvalido.setPrioridad("URGENTE");
         Assert.assertFalse(ReporteValidator.validate(reporteInvalido) == null);
     }
+
+    @Test
+    public void debeNormalizarPrioridadEnMinusculas() {
+        Reporte reporte = new Reporte();
+        reporte.setTitulo("Fuga de agua");
+        reporte.setDescripcion("La tubería principal presenta filtraciones");
+        reporte.setUbicacion("Barrio Centro");
+        reporte.setPrioridad(" media ");
+
+        Assert.assertTrue(ReporteValidator.validate(reporte) == null);
+        Assert.assertEquals("MEDIA", reporte.getPrioridad());
+    }
 }

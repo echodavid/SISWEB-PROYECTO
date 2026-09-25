@@ -1,17 +1,18 @@
 package org.uv.bean;
 
-import org.uv.dao.ReporteDAO;
-import org.uv.model.Reporte;
-import org.uv.validation.ReporteValidator;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.uv.dao.ReporteDAO;
+import org.uv.model.Reporte;
+import org.uv.validation.ReporteValidator;
 
 @ManagedBean(name = "reporteBean")
 @ViewScoped
@@ -30,6 +31,7 @@ public class ReporteBean implements Serializable {
     }
 
     public void guardar() {
+        ReporteValidator.normalizar(reporte);
         String error = ReporteValidator.validate(reporte);
         if (error != null) {
             FacesContext.getCurrentInstance().addMessage(null,
@@ -48,6 +50,7 @@ public class ReporteBean implements Serializable {
             reporte = new Reporte();
             cargarReportes();
         } catch (SQLException e) {
+            e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de persistencia", "No se pudo guardar el reporte."));
         }

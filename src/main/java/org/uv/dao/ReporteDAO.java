@@ -1,19 +1,34 @@
 package org.uv.dao;
 
-import org.uv.model.Reporte;
-import org.uv.util.DatabaseConfig;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.uv.model.Reporte;
+import org.uv.util.DatabaseConfig;
+
 public class ReporteDAO {
+
+    private Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("No fue posible cargar el driver de PostgreSQL.", e);
+        }
+
+        return DriverManager.getConnection(DatabaseConfig.getUrl(), DatabaseConfig.getUser(), DatabaseConfig.getPassword());
+    }
 
     public List<Reporte> listar() throws SQLException {
         List<Reporte> reportes = new ArrayList<>();
         String sql = "SELECT id, usuario_id, categoria_id, estado_id, titulo, descripcion, ubicacion, fecha_creacion, prioridad FROM reportes ORDER BY id";
 
-        try (Connection con = DriverManager.getConnection(DatabaseConfig.getUrl(), DatabaseConfig.getUser(), DatabaseConfig.getPassword());
+        try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -39,7 +54,7 @@ public class ReporteDAO {
 
     public void guardar(Reporte reporte) throws SQLException {
         String sql = "INSERT INTO reportes (usuario_id, categoria_id, estado_id, titulo, descripcion, ubicacion, prioridad) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection con = DriverManager.getConnection(DatabaseConfig.getUrl(), DatabaseConfig.getUser(), DatabaseConfig.getPassword());
+        try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, reporte.getUsuarioId() != null ? reporte.getUsuarioId() : 1);
             ps.setInt(2, reporte.getCategoriaId() != null ? reporte.getCategoriaId() : 1);

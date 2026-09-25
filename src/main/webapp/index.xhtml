@@ -7,14 +7,35 @@
     <title>PR07 - Reportes ciudadanos</title>
 </h:head>
 <h:body>
-    <h1>Sistema de reportes ciudadanos</h1>
-    <p>Proyecto Web 2.0 con JSF, PrimeFaces y PostgreSQL.</p>
-
     <h:form>
-        <p:panelGrid columns="2">
-            <p:link outcome="/reportes" value="Ver reportes"/>
-            <p:link outcome="/nuevo-reporte" value="Nuevo reporte"/>
-        </p:panelGrid>
+        <p:panel header="Sistema de reportes ciudadanos" style="max-width: 1000px; margin: 30px auto;">
+            <p>Plataforma para registrar incidencias, priorizar casos y dar seguimiento a problemas de la comunidad.</p>
+
+            <p:panelGrid columns="2" style="margin-top: 20px; width: 100%;">
+                <p:button value="Ver reportes" outcome="/reportes" />
+                <p:button value="Nuevo reporte" outcome="/nuevo-reporte" />
+            </p:panelGrid>
+
+            <p:panelGrid columns="3" style="margin-top: 20px; width: 100%;">
+                <p:panel header="Reportes activos">
+                    <h:outputText value="Gestión visible" />
+                </p:panel>
+                <p:panel header="Prioridad">
+                    <h:outputText value="Baja / Media / Alta" />
+                </p:panel>
+                <p:panel header="Seguimiento">
+                    <h:outputText value="Estado y ubicación" />
+                </p:panel>
+            </p:panelGrid>
+
+            <p:panel header="¿Qué puedes hacer aquí?" style="margin-top: 20px;">
+                <p:panelGrid columns="1" style="width: 100%;">
+                    <h:outputText value="Registrar incidencias de la comunidad desde una vista guiada." />
+                    <h:outputText value="Revisar reportes con prioridad, ubicación y descripción." />
+                    <h:outputText value="Mantener el flujo del sistema con JSF, PrimeFaces y PostgreSQL." />
+                </p:panelGrid>
+            </p:panel>
+        </p:panel>
     </h:form>
 </h:body>
 </html>
